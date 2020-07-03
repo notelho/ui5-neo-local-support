@@ -1,0 +1,32 @@
+{
+  "name": "ui5-neo-local-support",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/main.js",
+  "scripts": {
+    "check": "npm-check -s -u"
+  },
+  "keywords": [],
+  "author": {
+      "name": "Lucas Medeiros Cardoso",
+      "email": "clucasmedeiros@gmail.com"
+  },
+  "contributors": [
+      {
+          "name": "Nathan Botelho",
+          "email": "nimbotelho@gmail.com"
+      }
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "@ui5/cli": "^1.10.0",
+    "axios": "^0.19.2",
+    "js-base64": "^2.6.2"
+  },
+  "devDependencies": {
+    "eslint": "^7.3.1",
+    "eslint-config-google": "^0.14.0",
+    "eslint-plugin-import-helpers": "^1.0.2",
+    "npm-check": "^5.9.2"
+  }
+}
