@@ -8,14 +8,14 @@
   },
   "keywords": [],
   "author": {
-      "name": "Lucas Medeiros Cardoso",
-      "email": "clucasmedeiros@gmail.com"
+    "name": "Lucas Medeiros Cardoso",
+    "email": "clucasmedeiros@gmail.com"
   },
   "contributors": [
-      {
-          "name": "Nathan Botelho",
-          "email": "nimbotelho@gmail.com"
-      }
+    {
+      "name": "Nathan Botelho",
+      "email": "nimbotelho@gmail.com"
+    }
   ],
   "license": "MIT",
   "dependencies": {
