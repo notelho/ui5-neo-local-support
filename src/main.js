@@ -1,8 +1,7 @@
-const { Base64 } = require('js-base64');
 const path = require('path');
 
+const { applyDefaultHeaders, createAuthorizationHeader, applyCustomHeader } = require('./helpers/http/header');
 const { createRequest, sendRequest } = require('./helpers/http/request');
-const { addHeaders } = require('./helpers/http/response');
 
 const getNeoAppRoute = (routes, url) => {
     for (const route of routes) {
@@ -35,9 +34,12 @@ const createMiddleware = ({ resources, options }) => {
     const routes = require(resources.rootProject._readers[0]._project.path + '/neo-app.json')['routes'];
     const destinations = require(path.resolve(resources.rootProject._readers[0]._project.path, 'destinations.json'));
 
+    console.log(routes);
+    console.log(destinations);
+
     return async (req, res, next) => {
         try {
-            addHeaders(res);
+            applyDefaultHeaders(res);
 
             if (req.method === 'OPTIONS') {
                 res.status(200);
@@ -52,35 +54,30 @@ const createMiddleware = ({ resources, options }) => {
             }
 
             const destination = destinations[neoAppRoute.target.name];
+
             if (destination) {
                 const uri = req.url.includes('/resources') ? req.url.split('/resources/')[1] : neoAppRoute.target.entryPath;
 
-                let headers = {};
-                if (destination.credentials) {
-                    const credentials = Base64.encode(`${destination.credentials.user}:${destination.credentials.password}`);
-                    headers = {
-                        Authorization: `Basic ${credentials}`
-                    };
-                }
+                console.log('dest: ' + uri);
+
+                const customHeader = createAuthorizationHeader(destination);
 
                 const request = createRequest({
                     method: req.method,
                     url: `${destination.uri}${uri}`,
                     data: req.body,
-                    headers
+                    headers: customHeader
                 });
 
-                const { data, headers: responseHeaders } = await sendRequest(request);
+                console.log('headers');
+                const { data, headers } = await sendRequest(request);
 
-                for (const header in responseHeaders) {
-                    const currentHeader = res.get(header);
-                    if (!currentHeader) {
-                        res.set(header, responseHeaders[header]);
-                    } else if (Array.isArray(currentHeader)) {
-                        res.set(header, [...currentHeader, responseHeaders[header]]);
-                    } else {
-                        res.set(header, [currentHeader, responseHeaders[header]]);
-                    }
+                for (const property in headers) {
+                    console.log('===================================================');
+                    // console.log('-------------');
+                    // console.log(property + ' - ' + headers[property]);
+                    // console.log('-------------');
+                    applyCustomHeader(res, property, headers[property]);
                 }
 
                 res.status(200).send(data);
