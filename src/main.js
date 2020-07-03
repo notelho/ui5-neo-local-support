@@ -70,7 +70,19 @@ const createMiddleware = ({ resources, options }) => {
                     headers
                 });
 
-                const data = await sendRequest(request);
+                const { data, headers: responseHeaders } = await sendRequest(request);
+
+                for (const header in responseHeaders) {
+                    const currentHeader = res.get(header);
+                    if (!currentHeader) {
+                        res.set(header, responseHeaders[header]);
+                    } else if (Array.isArray(currentHeader)) {
+                        res.set(header, [...currentHeader, responseHeaders[header]]);
+                    } else {
+                        res.set(header, [currentHeader, responseHeaders[header]]);
+                    }
+                }
+
                 res.status(200).send(data);
             }
 

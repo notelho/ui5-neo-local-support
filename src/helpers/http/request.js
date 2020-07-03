@@ -10,14 +10,20 @@ const createRequest = ({ data = {}, method, url, headers = {} }) => {
 };
 
 const sendRequest = async (request) => {
-    const { data } = await axios({
+    const { data, headers } = await axios({
         data: request.data || {},
         method: request.method,
         url: request.url,
         headers: request.headers,
     });
 
-    return data;
+    console.log(headers);
+
+
+    return {
+        data,
+        headers
+    };
 };
 
 module.exports = {
