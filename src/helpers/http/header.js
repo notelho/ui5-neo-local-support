@@ -10,10 +10,6 @@ const applyDefaultHeaders = response => {
 
 const applyCustomHeader = (response, headerProp, headerValue) => {
     const currentValue = response.get(headerProp);
-    console.log('--------------------------------------------------------------------');
-    console.log('set prop: ' + headerProp);
-    console.log('set value: ' + headerValue);
-    console.log('current: ' + currentValue);
     if (!currentValue) {
         response.set(headerProp, headerValue);
     } else if (Array.isArray(currentValue)) {

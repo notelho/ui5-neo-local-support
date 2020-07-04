@@ -58,8 +58,6 @@ const createMiddleware = ({ resources, options }) => {
             if (destination) {
                 const uri = req.url.includes('/resources') ? req.url.split('/resources/')[1] : neoAppRoute.target.entryPath;
 
-                console.log('dest: ' + uri);
-
                 const customHeader = createAuthorizationHeader(destination);
 
                 const request = createRequest({
@@ -69,14 +67,9 @@ const createMiddleware = ({ resources, options }) => {
                     headers: customHeader
                 });
 
-                console.log('headers');
                 const { data, headers } = await sendRequest(request);
 
                 for (const property in headers) {
-                    console.log('===================================================');
-                    // console.log('-------------');
-                    // console.log(property + ' - ' + headers[property]);
-                    // console.log('-------------');
                     applyCustomHeader(res, property, headers[property]);
                 }
 
